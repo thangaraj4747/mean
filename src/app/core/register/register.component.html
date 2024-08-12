@@ -1,20 +1,42 @@
 <div class="container mt-5">
-    <form [formGroup]="regForm" (ngSubmit)="doReg()">
-        <div class="form-group mt-3">
-            <label for="exampleInputEmail1">Username</label>
-            <input type="email" class="form-control" placeholder="Enter Username" formControlName="username">
-        </div>
-        <div class="form-group mt-3">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Enter email" formControlName="email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group mt-3">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
-                formControlName="password">
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Register</button>
-    </form>
+  <form [formGroup]="regForm" (ngSubmit)="doReg()">
+    <div class="form-group mt-3">
+      <label for="exampleInputEmail1">Username</label>
+      <input type="email" class="form-control" placeholder="Enter Username" formControlName="username" minlength="3" maxlength="32" />
+      @if(getControls('username').errors?.['required'] && (getControls('username').touched || getControls('username').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Username required</small>
+      } @if(getControls('username').errors?.['minlength'] && (getControls('username').touched || getControls('username').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Minimum 3 characters required</small>
+      }
+    </div>
+    <div class="form-group mt-3">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" formControlName="email" email />
+      @if(getControls('email').errors?.['required'] && (getControls('email').touched || getControls('email').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Email required</small>
+      } @if(getControls('email').errors?.['email'] && (getControls('email').touched || getControls('email').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Please provide valid email address</small>
+      }
+    </div>
+    <div class="form-group mt-3">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password" />
+      @if(getControls('password').errors?.['required'] && (getControls('password').touched || getControls('password').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Password required</small>
+      } @if(getControls('password').errors?.['invalidPassword'] && (getControls('password').touched || getControls('password').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Please provide valid password</small><br />
+      <small id="emailHelp" class="form-text text-muted">Please use mixed of symbols, numbers, and characters</small>
+      }
+    </div>
+    <div class="form-group mt-3">
+      <label for="exampleInputPhone1">Phone</label>
+      <input type="number" class="form-control" id="exampleInputPhone1" placeholder="Enter phone number" formControlName="phone" />
+      @if(getControls('phone').errors?.['required'] && (getControls('phone').touched || getControls('phone').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Phone number required</small>
+      } @if(getControls('phone').errors?.['invalidPhoneNumber'] && (getControls('phone').touched || getControls('phone').dirty)) {
+      <small id="emailHelp" class="form-text text-danger">Please provide valid Phone number</small>
+      }
+    </div>
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="!regForm.valid">Register</button>
+  </form>
 </div>
