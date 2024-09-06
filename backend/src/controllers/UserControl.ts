@@ -11,19 +11,6 @@ const userController = {
       if (!username || !email || !password || !phone) {
         return res.status(400).json({ message: 'Please check input data' });
       }
-      // const uName = isValidUserName(username);
-      // if (uName) {
-      //     return res.status(400).json({ message: uName });
-      // }
-      // if (!isValidEmail(email)) {
-      //     return res.status(400).json({ message: 'Please enter valid email address' });
-      // }
-      // if (!isValidPassword(password)) {
-      //     return res.status(400).json({ message: 'Please enter valid password' });
-      // }
-      // if (!isValidPhoneNumber(phone)) {
-      //     return res.status(400).json({ message: 'Please enter valid phone number' });
-      // }
       const validationErrors = [
         isValidUserName(username),
         !isValidEmail(email) && 'Please enter a valid email address.',
@@ -47,12 +34,6 @@ const userController = {
       });
       await user.save();
       return res.status(201).json({ user });
-      // return user
-      //     .save()
-      //     .then((user) => res.status(201).json({ user }))
-      //     .catch((error) => {
-      //         res.status(500).json({ error });
-      //     });
     } catch (err) {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
@@ -65,12 +46,12 @@ const userController = {
       }
       const user = await User.findOne({ email });
       if (!user) {
-        return res.status(200).json({ message: "User doesn't exist" });
+        return res.status(400).json({ message: "User doesn't exist" });
       }
 
       const isMatch = password === user.password;
       if (!isMatch) {
-        return res.status(200).json({ message: "Password doesn't match" });
+        return res.status(400).json({ message: "Password doesn't match" });
       }
       const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
 
